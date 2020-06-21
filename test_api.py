@@ -15,11 +15,11 @@ class TestDemo:
     '''
     定义url的地址
     '''
-    __login_url = "http://106.53.223.46:9091/api/v1/user/login"
-    __list_url = "http://106.53.223.46:9091/api/v1/menu/list"
-    __logout_url = "http://106.53.223.46:9091/api/v1/user/logout"
-    __confirm_url = "http://106.53.223.46:9091/api/v1/menu/confirm"
-
+    __login_url = "http://106.53.247.164:9091/api/v1/user/login"
+    __list_url = "http://106.53.247.164:9091/api/v1/menu/list"
+    __logout_url = "http://106.53.247.164:9091/api/v1/user/logout"
+    __confirm_url = "http://106.53.247.164:9091/api/v1/menu/confirm"
+    # 默认用user01用户登录，因为后面的所有测试都是依赖于登录的
     def login(self, username="user01", password="pwd"):
         '''
         实现login，并且默认user01登录，给其他接口使用
@@ -34,7 +34,7 @@ class TestDemo:
             }
         }
         return requests.post(self.__login_url, json=data).json()
-
+    # 获取头文件，组装头文件给后面的接口测试使用的
     def get_headers(self):
         '''
         使用默认用户登录，拼接依赖登录接口需要的默认headers
@@ -81,7 +81,8 @@ class TestDemo:
     def test_get_list(self):
         '''
         菜单获取接口测试，默认用户登录后获取到菜单后进行菜单列表长度的判断，以及简单的内容判断，
-        用到了多重断言pytest-assume
+        用到了多重断言pytest-assume，assert的话，如果前一个assert失败，后面的assert就不会执
+        行了，而多重断言pytest-assume，即使前面一个断言失败，后面的断言也会继续执行。
         :return:None
         '''
         heard = self.get_headers()
